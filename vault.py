@@ -15,16 +15,18 @@ class Vault:
 
             "add":self.add,
             "read":self.read_passwords,
-            "help":self.help_, 
+            "help":self.help_,
+            "remove":self.remove,
         }
 
     def help_(self):
         print """
 
         add - Adds a new password
+        remove - remove a password
         read - Shows all saved passwords
         help - Displays this prompt                                                                                                                                                                    
-
+    
 
         """
         
@@ -55,6 +57,12 @@ class Vault:
 
     def read_passwords(self):
         print self.data
+
+    def remove(self):
+        data = raw_input("Paste complete password data: ")
+        self.data = self.data.replace(data+"\n", '')
+        self.write()
+        print "Password Removed!"
 
     def add(self):
         title = raw_input("Title given to password: ")
