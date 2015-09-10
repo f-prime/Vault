@@ -1,3 +1,5 @@
+import platform
+import thread
 import aes
 import getpass
 import os
@@ -5,12 +7,17 @@ import string
 import random
 import hashlib
 import sys
+import time
+import os
 
 class Vault:
+    global lastcommand
+    lastcommand = time.time()
+
     def __init__(self):
         self.password = None
         self.data = ""
-        self.file_ = ".file.db"
+        self.file_ = "file.db"
         self.commands = {
 
             "add":self.add,
@@ -26,7 +33,6 @@ class Vault:
         remove - remove a password
         read - Shows all saved passwords
         help - Displays this prompt                                                                                                                                                                    
-    
 
         """
         
@@ -35,13 +41,25 @@ class Vault:
             self.create()
         if not self.password:
             self.decryptData()
-        
+        thread.start_new_thread(self.inactivity, ())
+        global lastcommand
         while True:
             command = raw_input("Vault Shell> ")
+            lastcommand = time.time()
             if command in self.commands:
                 self.commands[command]()
             elif command == "exit":
                 sys.exit("Bye!")
+    
+    def inactivity(self):
+        global lastcommand
+        while True:
+            if time.time() - lastcommand > 10:
+                if platform.system() == "Linux":
+                    os.system("clear")
+                elif platform.system() == "Windows":
+                    os.system("cls")
+                os._exit(1)
 
     def create(self):
         print "No passwords found stored, let's set it up."
