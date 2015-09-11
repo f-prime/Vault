@@ -24,6 +24,7 @@ class Vault:
             "read":self.read_passwords,
             "help":self.help_,
             "remove":self.remove,
+            "search":self.search,
         }
 
     def help_(self):
@@ -32,10 +33,11 @@ class Vault:
         add - Adds a new password
         remove - remove a password
         read - Shows all saved passwords
+        search - Search for specific Password based on description
         help - Displays this prompt                                                                                                                                                                    
 
         """
-        
+    
     def main(self):
         if not os.path.exists(self.file_):
             self.create()
@@ -54,13 +56,24 @@ class Vault:
     def inactivity(self):
         global lastcommand
         while True:
-            if time.time() - lastcommand > 10:
+            if time.time() - lastcommand > 30:
                 if platform.system() == "Linux":
                     os.system("clear")
                 elif platform.system() == "Windows":
                     os.system("cls")
                 os._exit(1)
 
+    def search(self):
+        searchTerm = raw_input("Input keywords to search for: ").lower()
+        for x in self.data.split("\n"):
+            x = x.lower()
+            if x.find(searchTerm) != -1:
+                print x
+            else:
+                for y in searchTerm.split():
+                    if x.find(searchTerm) != -1:
+                        print x
+                        break
     def create(self):
         print "No passwords found stored, let's set it up."
         password = getpass.getpass("Password: ")
