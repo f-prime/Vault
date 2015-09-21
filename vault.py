@@ -66,12 +66,12 @@ class Vault:
     def search(self):
         searchTerm = raw_input("Input keywords to search for: ").lower()
         for x in self.data.split("\n"):
-            x = x.lower()
-            if x.find(searchTerm) != -1:
+            z = x.lower()
+            if z.find(searchTerm) != -1:
                 print x
             else:
                 for y in searchTerm.split():
-                    if x.find(searchTerm) != -1:
+                    if z.find(searchTerm) != -1:
                         print x
                         break
     def create(self):
@@ -105,7 +105,13 @@ class Vault:
             return
 
         if not password:
-            password = self.generate()
+            length = raw_input("Short or long password? ").lower()
+            if length == "short":
+                password = self.generate()[:8]
+            elif length != "short" and length != "long":
+                print "Okay, I don't know what that means so I'll just make it long."
+            if not password:
+                password = self.generate()
             print "Password is: {}".format(password)
         
         self.data += "{0} - {1}\n".format(title, password)
