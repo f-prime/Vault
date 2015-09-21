@@ -76,7 +76,7 @@ class Vault:
                         break
     def create(self):
         print "No passwords found stored, let's set it up."
-        password = getpass.getpass("Password: ")
+        password = getpass.getpass("Create Password: ")
         confirm = getpass.getpass("Confirm Password: ")
         if password != confirm:
             print "Passwords did not match, restarting."
