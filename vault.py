@@ -51,6 +51,8 @@ class Vault:
             if command in self.commands:
                 self.commands[command]()
             elif command == "exit":
+                lastcommand = 1000000
+                self.inactivity()
                 sys.exit("Bye!")
     
     def inactivity(self):
